@@ -1,62 +1,58 @@
 package com.ccsw.tutorial.category;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ccsw.tutorial.category.model.Category;
 import com.ccsw.tutorial.category.model.CategoryDto;
 
 /**
- * @author ccsw
- *
- */
+* @author ccsw
+*
+*/
 @Service
 public class CategoryServiceImpl implements CategoryService {
-    private long SEQUENCE = 1;
 
-    private Map<Long, CategoryDto> categories = new HashMap<Long, CategoryDto>();
+  @Autowired
+  CategoryRepository categoryRepository;
 
-    /**
-     * Método para recuperar todas las Category
-     * 
-     * @return
-     */
-    public List<CategoryDto> findAll() {
+  /**
+  * {@inheritDoc}
+  */
+  @Override
+  public List<Category> findAll() {
 
-        return new ArrayList(this.categories.values());
-    }
+    return (List<Category>) this.categoryRepository.findAll();
+  }
 
-    /**
-     * Método para crear o actualizar una Category
-     * 
-     * @param dto
-     * @return
-     */
-    public void save(Long id, CategoryDto dto) {
+  /**
+  * {@inheritDoc}
+  */
+  @Override
+  public void save(Long id, CategoryDto dto) {
 
-        CategoryDto category;
+    Category categoria = null;
 
-        if (id == null) {
-            category = new CategoryDto();
-            category.setId(this.SEQUENCE++);
-            this.categories.put(category.getId(), category);
-        } else {
-            category = this.categories.get(id);
-        }
+    if (id == null)
+      categoria = new Category();
+    else
+      categoria = this.categoryRepository.findById(id).orElse(null);
 
-        category.setName(dto.getName());
-    }
+    categoria.setName(dto.getName());
 
-    /**
-     * Método para borrar una Category
-     * 
-     * @param id
-     */
-    public void delete(Long id) {
+    this.categoryRepository.save(categoria);
+  }
 
-        this.categories.remove(id);
-    }
+  /**
+  * {@inheritDoc}
+  */
+  @Override
+  public void delete(Long id) {
+
+    this.categoryRepository.deleteById(id);
+
+  }
 }

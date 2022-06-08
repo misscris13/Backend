@@ -10,48 +10,50 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ccsw.tutorial.category.model.CategoryDto;
+import com.devonfw.module.beanmapping.common.api.BeanMapper;
 
 /**
- * @author ccsw
- */
+* @author ccsw
+*/
 @RequestMapping(value = "/category")
 @RestController
 public class CategoryController {
 
-    @Autowired
-    private CategoryService categoryService;
+  @Autowired
+  CategoryService categoryService;
 
-    /**
-     * Método para recuperar todas las Category
-     * 
-     * @return
-     */
-    @RequestMapping(path = "", method = RequestMethod.GET)
-    public List<CategoryDto> findAll() {
+  @Autowired
+  BeanMapper beanMapper;
 
-        return this.categoryService.findAll();
-    }
+  /**
+  * Método para recuperar todas las {@link com.ccsw.tutorial.category.model.Category}
+  * @return
+  */
+  @RequestMapping(path = "", method = RequestMethod.GET)
+  public List<CategoryDto> findAll() {
 
-    /**
-     * Método para crear o actualizar una Category
-     * 
-     * @param dto
-     * @return
-     */
-    @RequestMapping(path = { "", "/{id}" }, method = RequestMethod.PUT)
-    public void save(@PathVariable(name = "id", required = false) Long id, @RequestBody CategoryDto dto) {
+    return this.beanMapper.mapList(this.categoryService.findAll(), CategoryDto.class);
+  }
 
-        this.categoryService.save(id, dto);
-    }
+  /**
+  * Método para crear o actualizar una {@link com.ccsw.tutorial.category.model.Category}
+  * @param dto
+  * @return
+  */
+  @RequestMapping(path = { "", "/{id}" }, method = RequestMethod.PUT)
+  public void save(@PathVariable(name = "id", required = false) Long id, @RequestBody CategoryDto dto) {
 
-    /**
-     * Método para borrar una Category
-     * 
-     * @param id
-     */
-    @RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
-    public void delete(@PathVariable("id") Long id) {
+    this.categoryService.save(id, dto);
+  }
 
-        this.categoryService.delete(id);
-    }
+  /**
+  * Método para borrar una {@link com.ccsw.tutorial.category.model.Category}
+  * @param id
+  */
+  @RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
+  public void delete(@PathVariable("id") Long id) {
+
+    this.categoryService.delete(id);
+
+  }
 }
