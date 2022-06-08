@@ -1,4 +1,4 @@
-package com.capgemini.ccsw.tutorial.category;
+package com.ccsw.tutorial.category;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,7 +7,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
-import com.capgemini.ccsw.tutorial.category.model.CategoryDto;
+import com.ccsw.tutorial.category.model.CategoryDto;
 
 /**
  * @author ccsw

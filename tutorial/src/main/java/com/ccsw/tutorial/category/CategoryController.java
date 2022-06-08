@@ -1,4 +1,4 @@
-package com.capgemini.ccsw.tutorial.category;
+package com.ccsw.tutorial.category;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.capgemini.ccsw.tutorial.category.model.CategoryDto;
+import com.ccsw.tutorial.category.model.CategoryDto;
 
 /**
  * @author ccsw

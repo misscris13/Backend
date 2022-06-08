@@ -1,4 +1,4 @@
-package com.capgemini.ccsw.tutorial.config;
+package com.ccsw.tutorial.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,4 +1,4 @@
-package com.capgemini.ccsw.tutorial.category.model;
+package com.ccsw.tutorial.category.model;
 
 /**
  * @author ccsw
