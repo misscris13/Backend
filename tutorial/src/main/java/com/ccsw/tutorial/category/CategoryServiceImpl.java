@@ -10,49 +10,57 @@ import com.ccsw.tutorial.category.model.Category;
 import com.ccsw.tutorial.category.model.CategoryDto;
 
 /**
-* @author ccsw
-*
-*/
+ * @author ccsw
+ *
+ */
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
-  @Autowired
-  CategoryRepository categoryRepository;
+    @Autowired
+    CategoryRepository categoryRepository;
 
-  /**
-  * {@inheritDoc}
-  */
-  @Override
-  public List<Category> findAll() {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Category get(Long id) {
+        return this.categoryRepository.findById(id).orElse(null);
+    }
 
-    return (List<Category>) this.categoryRepository.findAll();
-  }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Category> findAll() {
 
-  /**
-  * {@inheritDoc}
-  */
-  @Override
-  public void save(Long id, CategoryDto dto) {
+        return (List<Category>) this.categoryRepository.findAll();
+    }
 
-    Category categoria = null;
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void save(Long id, CategoryDto dto) {
 
-    if (id == null)
-      categoria = new Category();
-    else
-      categoria = this.categoryRepository.findById(id).orElse(null);
+        Category categoria = null;
 
-    categoria.setName(dto.getName());
+        if (id == null)
+            categoria = new Category();
+        else
+            categoria = this.get(id);
 
-    this.categoryRepository.save(categoria);
-  }
+        categoria.setName(dto.getName());
 
-  /**
-  * {@inheritDoc}
-  */
-  @Override
-  public void delete(Long id) {
+        this.categoryRepository.save(categoria);
+    }
 
-    this.categoryRepository.deleteById(id);
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void delete(Long id) {
 
-  }
+        this.categoryRepository.deleteById(id);
+
+    }
 }

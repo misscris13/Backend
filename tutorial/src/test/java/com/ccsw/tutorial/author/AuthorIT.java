@@ -18,6 +18,8 @@ import org.springframework.test.annotation.DirtiesContext;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.List;
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class AuthorIT {
@@ -40,6 +42,17 @@ public class AuthorIT {
 
     ParameterizedTypeReference<Page<AuthorDto>> responseTypePage = new ParameterizedTypeReference<Page<AuthorDto>>() {
     };
+    ParameterizedTypeReference<List<AuthorDto>> responseTypeList = new ParameterizedTypeReference<List<AuthorDto>>() {
+    };
+
+    @Test
+    public void findAllShouldReturnAllAuthor() {
+        ResponseEntity<List<AuthorDto>> response = restTemplate.exchange(LOCALHOST + port + SERVICE_PATH,
+                HttpMethod.GET, null, responseTypeList);
+
+        assertNotNull(response);
+        assertEquals(TOTAL_AUTHORS, response.getBody().size());
+    }
 
     @Test // that the first page has the correct size
     public void findFirstPageWithFiveSizeShouldReturnFirstFiveResults() {

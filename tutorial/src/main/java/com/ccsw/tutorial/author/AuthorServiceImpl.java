@@ -1,5 +1,7 @@
 package com.ccsw.tutorial.author;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.BeanUtils;
@@ -25,9 +27,24 @@ public class AuthorServiceImpl implements AuthorService {
     /**
      * {@inheritDoc}
      */
+    public Author get(Long id) {
+        return this.authorRepository.findById(id).orElse(null);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Page<Author> findPage(AuthorSearchDto dto) {
         return this.authorRepository.findAll(dto.getPageable());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Author> findAll() {
+        return (List<Author>) this.authorRepository.findAll();
     }
 
     /**
@@ -38,7 +55,7 @@ public class AuthorServiceImpl implements AuthorService {
         Author author = null;
 
         if (id != null)
-            author = this.authorRepository.findById(id).orElse(null);
+            author = this.get(id);
         else
             author = new Author();
 
