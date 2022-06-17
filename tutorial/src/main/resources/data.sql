@@ -22,3 +22,12 @@ INSERT INTO CLIENT(id, name) VALUES (1, 'Raul Fernandez');
 INSERT INTO CLIENT(id, name) VALUES (2, 'Jose Luis Gonzalez');
 INSERT INTO CLIENT(id, name) VALUES (3, 'Ramon Ruiz');
 INSERT INTO CLIENT(id, name) VALUES (4, 'Luisa Ramos');
+
+INSERT INTO LEASE(id, game_id, client_id, start_date, end_date) VALUES (1, 1, 1, '2022-4-17', '2022-4-22');
+INSERT INTO LEASE(id, game_id, client_id, start_date, end_date) VALUES (2, 2, 2, '2022-4-17', '2022-4-23');
+INSERT INTO LEASE(id, game_id, client_id, start_date, end_date) VALUES (3, 3, 3, '2022-4-17', '2022-4-24');
+INSERT INTO LEASE(id, game_id, client_id, start_date, end_date) VALUES (4, 4, 4, '2022-4-17', '2022-4-25');
+INSERT INTO LEASE(id, game_id, client_id, start_date, end_date) VALUES (5, 5, 1, '2022-4-23', '2022-4-30');
+INSERT INTO LEASE(id, game_id, client_id, start_date, end_date) VALUES (6, 1, 2, '2022-4-24', '2022-5-1');
+INSERT INTO LEASE(id, game_id, client_id, start_date, end_date) VALUES (7, 2, 3, '2022-4-25', '2022-5-2');
+INSERT INTO LEASE(id, game_id, client_id, start_date, end_date) VALUES (8, 3, 4, '2022-4-26', '2022-5-3');
