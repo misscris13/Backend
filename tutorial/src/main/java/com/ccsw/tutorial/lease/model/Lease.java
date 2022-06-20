@@ -5,8 +5,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import com.ccsw.tutorial.client.model.Client;
 import com.ccsw.tutorial.game.model.Game;
@@ -24,17 +26,19 @@ public class Lease {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "game", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "game_id", nullable = false)
     private Game game;
 
-    @Column(name = "client", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "client_id", nullable = false)
     private Client client;
 
     @Column(name = "start_date", nullable = false)
-    private LocalDateTime startDate;
+    private LocalDate startDate;
 
     @Column(name = "end_date", nullable = false)
-    private LocalDateTime endDate;
+    private LocalDate endDate;
 
     /**
      * @return id
@@ -81,28 +85,28 @@ public class Lease {
     /**
      * @return startDate
      */
-    public LocalDateTime getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
     /**
      * @param startDate new value of {@link #getStartDate}
      */
-    public void setStartDate(LocalDateTime startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
     /**
      * @return endDate
      */
-    public LocalDateTime getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
     /**
      * @param endDate new value of {@link #getEndDate}
      */
-    public void setEndDate(LocalDateTime endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 }

@@ -1,6 +1,6 @@
 package com.ccsw.tutorial.lease.model;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import com.ccsw.tutorial.game.model.GameDto;
 import com.ccsw.tutorial.client.model.ClientDto;
@@ -14,8 +14,8 @@ public class LeaseDto {
     private Long id;
     private GameDto game;
     private ClientDto client;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
 
     /**
      * @return id
@@ -28,7 +28,7 @@ public class LeaseDto {
      * @param id new value of {@link #getId}
      */
     public void setId(Long id) {
-
+        this.id = id;
     }
 
     /**
@@ -62,28 +62,28 @@ public class LeaseDto {
     /**
      * @return startDate
      */
-    public LocalDateTime getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
     /**
      * @param startDate new value of {@link #getStartDate}
      */
-    public void setStartDate(LocalDateTime startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
     /**
      * @return endDate
      */
-    public LocalDateTime getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
     /**
      * @param endDate new value of {@link #getEndDate}
      */
-    public void setEndDate(LocalDateTime endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 }
