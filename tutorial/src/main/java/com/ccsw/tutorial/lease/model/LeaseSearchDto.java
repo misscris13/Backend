@@ -2,11 +2,6 @@ package com.ccsw.tutorial.lease.model;
 
 import org.springframework.data.domain.Pageable;
 
-/**
- * 
- * @author ccamposa
- *
- */
 public class LeaseSearchDto {
     private Pageable pageable;
 
@@ -18,7 +13,7 @@ public class LeaseSearchDto {
     }
 
     /**
-     * @param pageable new value of {@link #getPageable}
+     * @param pageable
      */
     public void setPageable(Pageable pageable) {
         this.pageable = pageable;

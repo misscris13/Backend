@@ -1,9 +1,9 @@
 package com.ccsw.tutorial.lease.model;
 
-import java.time.LocalDate;
-
 import com.ccsw.tutorial.game.model.GameDto;
 import com.ccsw.tutorial.client.model.ClientDto;
+
+import java.time.LocalDate;
 
 /**
  * 
@@ -11,6 +11,7 @@ import com.ccsw.tutorial.client.model.ClientDto;
  *
  */
 public class LeaseDto {
+    // Variables
     private Long id;
     private GameDto game;
     private ClientDto client;
@@ -18,72 +19,73 @@ public class LeaseDto {
     private LocalDate endDate;
 
     /**
-     * @return id
+     * @return the id
      */
     public Long getId() {
-        return this.id;
+        return id;
     }
 
     /**
-     * @param id new value of {@link #getId}
+     * @param id the id to set
      */
     public void setId(Long id) {
         this.id = id;
     }
 
     /**
-     * @return game
+     * @return the game
      */
     public GameDto getGame() {
         return game;
     }
 
     /**
-     * @param game new value of {@link #getGame}
+     * @param game the game to set
      */
     public void setGame(GameDto game) {
         this.game = game;
     }
 
     /**
-     * @return client
+     * @return the client
      */
     public ClientDto getClient() {
         return client;
     }
 
     /**
-     * @param client new value of {@link #getClient}
+     * @param client the client to set
      */
     public void setClient(ClientDto client) {
         this.client = client;
     }
 
     /**
-     * @return startDate
+     * @return the startDate
      */
     public LocalDate getStartDate() {
         return startDate;
     }
 
     /**
-     * @param startDate new value of {@link #getStartDate}
+     * @param startDate the startDate to set
      */
     public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
     /**
-     * @return endDate
+     * @return the endDate
      */
     public LocalDate getEndDate() {
         return endDate;
     }
 
     /**
-     * @param endDate new value of {@link #getEndDate}
+     * @param endDate the endDate to set
      */
     public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
+
 }
