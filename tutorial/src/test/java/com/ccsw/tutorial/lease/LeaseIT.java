@@ -30,8 +30,8 @@ public class LeaseIT {
     public static final String LOCALHOST = "http://localhost:";
     public static final String SERVICE_PATH = "/lease/";
 
-    public static final Long DELETE_LEASE_ID = 6L;
-    public static final Long MODIFY_LEASE_ID = 3L;
+    public static final Long DELETE_LEASE_ID = 3L;
+    public static final Long MODIFY_LEASE_ID = 1L;
     public static final LocalDate NEW_LEASE_START_DATE = LocalDate.of(2022, 1, 1);
     public static final LocalDate NEW_LEASE_END_DATE = LocalDate.of(2022, 1, 5);
 
