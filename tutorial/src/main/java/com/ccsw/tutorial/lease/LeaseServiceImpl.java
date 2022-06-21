@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import com.ccsw.tutorial.client.ClientService;
+import com.ccsw.tutorial.game.GameService;
 import com.ccsw.tutorial.lease.model.Lease;
 import com.ccsw.tutorial.lease.model.LeaseDto;
 import com.ccsw.tutorial.lease.model.LeaseSearchDto;
@@ -21,6 +23,12 @@ import com.ccsw.tutorial.lease.model.LeaseSearchDto;
 public class LeaseServiceImpl implements LeaseService {
     @Autowired
     LeaseRepository leaseRepository;
+
+    @Autowired
+    ClientService clientService;
+
+    @Autowired
+    GameService gameService;
 
     /**
      * {@inheritDoc}
@@ -42,7 +50,10 @@ public class LeaseServiceImpl implements LeaseService {
         else
             lease = new Lease();
 
-        BeanUtils.copyProperties(data, lease, "id");
+        BeanUtils.copyProperties(data, lease, "id", "startDate", "endDate");
+
+        lease.setClient(clientService.get(data.getClient().getId()));
+        lease.setGame(gameService.find("", data.getGame().getId()).get(0));
 
         this.leaseRepository.save(lease);
     }

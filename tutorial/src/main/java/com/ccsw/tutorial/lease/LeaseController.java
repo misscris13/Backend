@@ -39,7 +39,7 @@ public class LeaseController {
      * @return
      */
     @RequestMapping(path = "", method = RequestMethod.POST)
-    public Page<LeaseDto> findPage(LeaseSearchDto dto) {
+    public Page<LeaseDto> findPage(@RequestBody LeaseSearchDto dto) {
         return this.beanMapper.mapPage(this.leaseService.findPage(dto), LeaseDto.class);
     }
 
@@ -50,7 +50,7 @@ public class LeaseController {
      * @param data
      */
     @RequestMapping(path = { "", "/{id}" }, method = RequestMethod.PUT)
-    public void save(Long id, LeaseDto data) {
+    public void save(Long id, @RequestBody LeaseDto data) {
         this.leaseService.save(id, data);
     }
 

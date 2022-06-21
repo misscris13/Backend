@@ -51,7 +51,7 @@ public class Lease {
      * @param id new value of {@link #getId}
      */
     public void setId(Long id) {
-
+        this.id = id;
     }
 
     /**
