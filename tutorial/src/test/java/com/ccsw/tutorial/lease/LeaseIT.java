@@ -114,8 +114,8 @@ public class LeaseIT {
         LeaseDto dto = new LeaseDto();
         ClientDto clientDto = new ClientDto();
         GameDto gameDto = new GameDto();
-        clientDto.setId(1L);
-        gameDto.setId(1L);
+        clientDto.setId(2L);
+        gameDto.setId(2L);
 
         dto.setClient(clientDto);
         dto.setGame(gameDto);
@@ -139,6 +139,8 @@ public class LeaseIT {
         assertNotNull(lease);
         assertEquals(NEW_LEASE_START_DATE, lease.getStartDate());
         assertEquals(NEW_LEASE_END_DATE, lease.getEndDate());
+        assertEquals(clientDto.getId(), lease.getClient().getId());
+        assertEquals(gameDto.getId(), lease.getGame().getId());
     }
 
     @Test
