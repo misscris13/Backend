@@ -34,6 +34,14 @@ public class GameServiceImpl implements GameService {
      * {@inheritDoc}
      */
     @Override
+    public Game get(Long id) {
+        return this.gameRepository.findById(id).orElse(null);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public List<Game> find(String title, Long category) {
         return this.gameRepository.find(title, category);
     }
