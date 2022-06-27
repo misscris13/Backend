@@ -1,5 +1,7 @@
 package com.ccsw.tutorial.lease;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.BeanUtils;
@@ -36,6 +38,14 @@ public class LeaseServiceImpl implements LeaseService {
     @Override
     public Lease get(Long id) {
         return this.leaseRepository.findById(id).orElse(null);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Lease> findAll() {
+        return (List<Lease>) this.leaseRepository.findAll();
     }
 
     /**

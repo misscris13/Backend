@@ -1,5 +1,7 @@
 package com.ccsw.tutorial.lease;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -9,10 +11,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ccsw.tutorial.author.model.Author;
+import com.ccsw.tutorial.author.model.AuthorDto;
 import com.ccsw.tutorial.config.mapper.BeanMapper;
+import com.ccsw.tutorial.lease.model.Lease;
 import com.ccsw.tutorial.lease.model.LeaseDto;
 import com.ccsw.tutorial.lease.model.LeaseSearchDto;
 
+/**
+ * 
+ * @author ccamposa
+ *
+ */
 @RequestMapping(value = "/lease")
 @RestController
 @CrossOrigin(origins = "*")
@@ -33,6 +43,18 @@ public class LeaseController {
     @RequestMapping(path = "", method = RequestMethod.POST)
     public Page<LeaseDto> findPage(@RequestBody LeaseSearchDto dto) {
         return this.beanMapper.mapPage(this.leaseService.findPage(dto), LeaseDto.class);
+    }
+
+    /**
+     * Recupera un listado de {@link com.ccsw.tutorial.lease.model.Lease}
+     * 
+     * @return
+     */
+    @RequestMapping(path = "", method = RequestMethod.GET)
+    public List<LeaseDto> findAll() {
+        List<Lease> leases = this.leaseService.findAll();
+
+        return this.beanMapper.mapList(leases, LeaseDto.class);
     }
 
     /**

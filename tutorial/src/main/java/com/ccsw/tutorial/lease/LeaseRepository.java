@@ -6,6 +6,11 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.ccsw.tutorial.lease.model.Lease;
 
+/**
+ * 
+ * @author ccamposa
+ *
+ */
 public interface LeaseRepository extends CrudRepository<Lease, Long> {
     // query
     Page<Lease> findAll(Pageable pageable);

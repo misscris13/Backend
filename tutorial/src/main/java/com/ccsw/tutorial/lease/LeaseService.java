@@ -1,5 +1,7 @@
 package com.ccsw.tutorial.lease;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 
 import com.ccsw.tutorial.lease.model.Lease;
@@ -23,6 +25,13 @@ public interface LeaseService {
      * @return
      */
     Page<Lease> findPage(LeaseSearchDto dto);
+
+    /**
+     * Recupera un listado de {@link com.ccsw.tutorial.lease.model.Lease}
+     * 
+     * @return
+     */
+    List<Lease> findAll();
 
     /**
      * Método para crear o editar una {@link com.ccsw.tutorial.lease.model.Lease}
