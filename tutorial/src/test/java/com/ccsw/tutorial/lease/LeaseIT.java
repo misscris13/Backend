@@ -18,11 +18,14 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.CALLS_REAL_METHODS;
 
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
@@ -38,6 +41,18 @@ public class LeaseIT {
     private static final int TOTAL_LEASES = 8;
     private static final int PAGE_SIZE = 5;
 
+    private static final Long EXISTS_GAME = 1L;
+    private static final Long NOT_EXISTS_GAME = 10L;
+    private static final Long EXISTS_CLIENT = 1L;
+    private static final Long NOT_EXISTS_CLIENT = 10L;
+    private static final LocalDate EXISTS_DATE = LocalDate.parse("2022-04-17");
+    private static final LocalDate EXISTS_MIDDLE_DATE = LocalDate.parse("2022-04-19");
+    private static final LocalDate NOT_EXISTS_DATE = LocalDate.parse("2022-04-15");
+
+    private static final String GAME_ID_PARAM = "gameId";
+    private static final String CLIENT_ID_PARAM = "clientId";
+    private static final String DATE_PARAM = "date";
+
     @LocalServerPort
     private int port;
 
@@ -46,6 +61,13 @@ public class LeaseIT {
 
     ParameterizedTypeReference<Page<LeaseDto>> responseTypePage = new ParameterizedTypeReference<Page<LeaseDto>>() {
     };
+
+    private String getUrlWithParams() {
+        return UriComponentsBuilder.fromHttpUrl(LOCALHOST + port + SERVICE_PATH)
+                .queryParam(GAME_ID_PARAM, "{" + GAME_ID_PARAM + "}")
+                .queryParam(CLIENT_ID_PARAM, "{" + CLIENT_ID_PARAM + "}").queryParam(DATE_PARAM, "{" + DATE_PARAM + "}")
+                .encode().toUriString();
+    }
 
     @Test
     public void findFirstPageWithFiveSizeShouldReturnFirstFiveResults() {
@@ -73,6 +95,21 @@ public class LeaseIT {
         assertNotNull(response);
         assertEquals(TOTAL_LEASES, response.getBody().getTotalElements());
         assertEquals(elementsCount, response.getBody().getContent().size());
+    }
+
+    public void findWithoutFiltersShouldReturnFirstPage() {
+        int LEASES_WITH_FILTER = 8;
+
+        LeaseSearchDto searchDto = new LeaseSearchDto();
+        searchDto.setPageable(PageRequest.of(0, PAGE_SIZE));
+
+        Map<String, Object> params = new HashMap<>();
+        params.put(GAME_ID_PARAM, null);
+        params.put(CLIENT_ID_PARAM, null);
+        params.put(DATE_PARAM, null);
+
+        ResponseEntity<Page<LeaseDto>> response = restTemplate.exchange(getUrlWithParams(), HttpMethod.POST,
+                new HttpEntity<>(searchDto), responseTypePage);
     }
 
     @Test
