@@ -1,5 +1,6 @@
 package com.ccsw.tutorial.lease;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -54,6 +55,14 @@ public class LeaseServiceImpl implements LeaseService {
     @Override
     public Page<Lease> findPage(LeaseSearchDto dto) {
         return this.leaseRepository.findAll(dto.getPageable());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Page<Lease> find(Long idGame, Long idClient, LocalDate date, LeaseSearchDto dto) {
+        return this.leaseRepository.find(idGame, idClient, date, dto.getPageable());
     }
 
     /**

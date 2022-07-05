@@ -18,14 +18,10 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.CALLS_REAL_METHODS;
 
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Map;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
@@ -49,10 +45,6 @@ public class LeaseIT {
     private static final LocalDate EXISTS_MIDDLE_DATE = LocalDate.parse("2022-04-19");
     private static final LocalDate NOT_EXISTS_DATE = LocalDate.parse("2022-04-15");
 
-    private static final String GAME_ID_PARAM = "gameId";
-    private static final String CLIENT_ID_PARAM = "clientId";
-    private static final String DATE_PARAM = "date";
-
     @LocalServerPort
     private int port;
 
@@ -61,13 +53,6 @@ public class LeaseIT {
 
     ParameterizedTypeReference<Page<LeaseDto>> responseTypePage = new ParameterizedTypeReference<Page<LeaseDto>>() {
     };
-
-    private String getUrlWithParams() {
-        return UriComponentsBuilder.fromHttpUrl(LOCALHOST + port + SERVICE_PATH)
-                .queryParam(GAME_ID_PARAM, "{" + GAME_ID_PARAM + "}")
-                .queryParam(CLIENT_ID_PARAM, "{" + CLIENT_ID_PARAM + "}").queryParam(DATE_PARAM, "{" + DATE_PARAM + "}")
-                .encode().toUriString();
-    }
 
     @Test
     public void findFirstPageWithFiveSizeShouldReturnFirstFiveResults() {
@@ -97,19 +82,140 @@ public class LeaseIT {
         assertEquals(elementsCount, response.getBody().getContent().size());
     }
 
-    public void findWithoutFiltersShouldReturnFirstPage() {
-        int LEASES_WITH_FILTER = 8;
+    @Test
+    public void findWithoutFiltersShouldReturnFilteredFirstPage() {
+        int LEASES_WITH_FILTER_PAGED = 5;
 
         LeaseSearchDto searchDto = new LeaseSearchDto();
         searchDto.setPageable(PageRequest.of(0, PAGE_SIZE));
 
-        Map<String, Object> params = new HashMap<>();
-        params.put(GAME_ID_PARAM, null);
-        params.put(CLIENT_ID_PARAM, null);
-        params.put(DATE_PARAM, null);
+        ResponseEntity<Page<LeaseDto>> response = restTemplate.exchange(LOCALHOST + port + SERVICE_PATH,
+                HttpMethod.POST, new HttpEntity<>(searchDto), responseTypePage);
 
-        ResponseEntity<Page<LeaseDto>> response = restTemplate.exchange(getUrlWithParams(), HttpMethod.POST,
-                new HttpEntity<>(searchDto), responseTypePage);
+        assertNotNull(response);
+        assertEquals(LEASES_WITH_FILTER_PAGED, response.getBody().getSize());
+    }
+
+    @Test
+    public void findExistsGameShouldReturnFilteredFirstPage() {
+        int LEASES_WITH_FILTER_PAGED = 2;
+
+        LeaseSearchDto searchDto = new LeaseSearchDto();
+        searchDto.setPageable(PageRequest.of(0, PAGE_SIZE));
+        searchDto.setIdGame(EXISTS_GAME);
+
+        ResponseEntity<Page<LeaseDto>> response = restTemplate.exchange(LOCALHOST + port + SERVICE_PATH,
+                HttpMethod.POST, new HttpEntity<>(searchDto), responseTypePage);
+
+        assertNotNull(response);
+        assertEquals(LEASES_WITH_FILTER_PAGED, response.getBody().getTotalElements());
+    }
+
+    @Test
+    public void findExistsClientShouldReturnFirstPage() {
+        int LEASES_WITH_FILTER_PAGED = 2;
+
+        LeaseSearchDto searchDto = new LeaseSearchDto();
+        searchDto.setPageable(PageRequest.of(0, PAGE_SIZE));
+        searchDto.setIdClient(EXISTS_CLIENT);
+
+        ResponseEntity<Page<LeaseDto>> response = restTemplate.exchange(LOCALHOST + port + SERVICE_PATH,
+                HttpMethod.POST, new HttpEntity<>(searchDto), responseTypePage);
+
+        assertNotNull(response);
+        assertEquals(LEASES_WITH_FILTER_PAGED, response.getBody().getTotalElements());
+    }
+
+    @Test
+    public void findExistsDateShouldReturnFirstPage() {
+        int LEASES_WITH_FILTER_PAGED = 4;
+
+        LeaseSearchDto searchDto = new LeaseSearchDto();
+        searchDto.setPageable(PageRequest.of(0, PAGE_SIZE));
+        searchDto.setDate(EXISTS_DATE);
+
+        ResponseEntity<Page<LeaseDto>> response = restTemplate.exchange(LOCALHOST + port + SERVICE_PATH,
+                HttpMethod.POST, new HttpEntity<>(searchDto), responseTypePage);
+
+        assertNotNull(response);
+        assertEquals(LEASES_WITH_FILTER_PAGED, response.getBody().getTotalElements());
+    }
+
+    @Test
+    public void findMiddleDateShouldReturnFirstPage() {
+        int LEASES_WITH_FILTER_PAGED = 4;
+
+        LeaseSearchDto searchDto = new LeaseSearchDto();
+        searchDto.setPageable(PageRequest.of(0, PAGE_SIZE));
+        searchDto.setDate(EXISTS_MIDDLE_DATE);
+
+        ResponseEntity<Page<LeaseDto>> response = restTemplate.exchange(LOCALHOST + port + SERVICE_PATH,
+                HttpMethod.POST, new HttpEntity<>(searchDto), responseTypePage);
+
+        assertNotNull(response);
+        assertEquals(LEASES_WITH_FILTER_PAGED, response.getBody().getTotalElements());
+    }
+
+    @Test
+    public void findExistsGameAndClientAndDateShouldReturnFirstPage() {
+        int LEASES_WITH_FILTER_PAGED = 1;
+
+        LeaseSearchDto searchDto = new LeaseSearchDto();
+        searchDto.setPageable(PageRequest.of(0, PAGE_SIZE));
+        searchDto.setIdGame(EXISTS_GAME);
+        searchDto.setIdClient(EXISTS_CLIENT);
+        searchDto.setDate(EXISTS_DATE);
+
+        ResponseEntity<Page<LeaseDto>> response = restTemplate.exchange(LOCALHOST + port + SERVICE_PATH,
+                HttpMethod.POST, new HttpEntity<>(searchDto), responseTypePage);
+
+        assertNotNull(response);
+        assertEquals(LEASES_WITH_FILTER_PAGED, response.getBody().getTotalElements());
+    }
+
+    @Test
+    public void findNotExistsGameShouldReturnEmpty() {
+        int LEASES_WITH_FILTER_PAGED = 0;
+
+        LeaseSearchDto searchDto = new LeaseSearchDto();
+        searchDto.setPageable(PageRequest.of(0, PAGE_SIZE));
+        searchDto.setIdGame(NOT_EXISTS_GAME);
+
+        ResponseEntity<Page<LeaseDto>> response = restTemplate.exchange(LOCALHOST + port + SERVICE_PATH,
+                HttpMethod.POST, new HttpEntity<>(searchDto), responseTypePage);
+
+        assertNotNull(response);
+        assertEquals(LEASES_WITH_FILTER_PAGED, response.getBody().getTotalElements());
+    }
+
+    @Test
+    public void findNotExistsClientShouldReturnEmpty() {
+        int LEASES_WITH_FILTER_PAGED = 0;
+
+        LeaseSearchDto searchDto = new LeaseSearchDto();
+        searchDto.setPageable(PageRequest.of(0, PAGE_SIZE));
+        searchDto.setIdClient(NOT_EXISTS_CLIENT);
+
+        ResponseEntity<Page<LeaseDto>> response = restTemplate.exchange(LOCALHOST + port + SERVICE_PATH,
+                HttpMethod.POST, new HttpEntity<>(searchDto), responseTypePage);
+
+        assertNotNull(response);
+        assertEquals(LEASES_WITH_FILTER_PAGED, response.getBody().getTotalElements());
+    }
+
+    @Test
+    public void findNotExistsDateShouldReturnEmpty() {
+        int LEASES_WITH_FILTER_PAGED = 0;
+
+        LeaseSearchDto searchDto = new LeaseSearchDto();
+        searchDto.setPageable(PageRequest.of(0, PAGE_SIZE));
+        searchDto.setDate(NOT_EXISTS_DATE);
+
+        ResponseEntity<Page<LeaseDto>> response = restTemplate.exchange(LOCALHOST + port + SERVICE_PATH,
+                HttpMethod.POST, new HttpEntity<>(searchDto), responseTypePage);
+
+        assertNotNull(response);
+        assertEquals(LEASES_WITH_FILTER_PAGED, response.getBody().getTotalElements());
     }
 
     @Test

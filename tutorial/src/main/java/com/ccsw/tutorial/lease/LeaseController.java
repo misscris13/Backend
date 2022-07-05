@@ -1,5 +1,6 @@
 package com.ccsw.tutorial.lease;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ccsw.tutorial.author.model.Author;
-import com.ccsw.tutorial.author.model.AuthorDto;
 import com.ccsw.tutorial.config.mapper.BeanMapper;
 import com.ccsw.tutorial.lease.model.Lease;
 import com.ccsw.tutorial.lease.model.LeaseDto;
@@ -40,10 +39,12 @@ public class LeaseController {
      * @param dto
      * @return
      */
-    @RequestMapping(path = "", method = RequestMethod.POST)
-    public Page<LeaseDto> findPage(@RequestBody LeaseSearchDto dto) {
-        return this.beanMapper.mapPage(this.leaseService.findPage(dto), LeaseDto.class);
-    }
+    /**
+     * @RequestMapping(path = "", method = RequestMethod.POST) public Page<LeaseDto>
+     *                      findPage(@RequestBody LeaseSearchDto dto) { return
+     *                      this.beanMapper.mapPage(this.leaseService.findPage(dto),
+     *                      LeaseDto.class); }
+     */
 
     /**
      * Recupera un listado de {@link com.ccsw.tutorial.lease.model.Lease}
@@ -55,6 +56,19 @@ public class LeaseController {
         List<Lease> leases = this.leaseService.findAll();
 
         return this.beanMapper.mapList(leases, LeaseDto.class);
+    }
+
+    /**
+     * Recupera un listado paginado y filtrado de
+     * {@link com.ccsw.tutorial.lease.model.Lease}
+     */
+    @RequestMapping(path = "", method = RequestMethod.POST)
+    public Page<LeaseDto> findPage(@RequestBody LeaseSearchDto dto) {
+        Long idGame = dto.getIdGame();
+        Long idClient = dto.getIdClient();
+        LocalDate date = dto.getDate();
+
+        return this.beanMapper.mapPage(this.leaseService.find(idGame, idClient, date, dto), LeaseDto.class);
     }
 
     /**

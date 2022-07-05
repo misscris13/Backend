@@ -1,5 +1,6 @@
 package com.ccsw.tutorial.lease;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -32,6 +33,16 @@ public interface LeaseService {
      * @return
      */
     List<Lease> findAll();
+
+    /**
+     * Recupera los préstamos filtrados utilziando paginación.
+     * 
+     * @param idGame
+     * @param idClient
+     * @param date
+     * @return
+     */
+    Page<Lease> find(Long idGame, Long idClient, LocalDate date, LeaseSearchDto dto);
 
     /**
      * Método para crear o editar una {@link com.ccsw.tutorial.lease.model.Lease}
